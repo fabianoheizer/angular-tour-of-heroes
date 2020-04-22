@@ -19,4 +19,10 @@ export class HeroService {
       return of(HEROES);
   }
 
+  getHeroe(id: number): Observable<Hero> {
+      // Note the backticks ( ` ) that define a JavaScript template literal for embedding the id.
+      this.messageService.add(`HeroService: fetched hero id=${id}`);
+      
+      return of( HEROES.find(hero => hero.id === id) );
+  }
 }
