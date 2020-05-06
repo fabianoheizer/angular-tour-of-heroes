@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Hero } from '../hero';
 
 import { HeroService } from '../hero.service';
-import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-heroes',
@@ -14,7 +13,7 @@ export class HeroesComponent implements OnInit {
     heroes: Hero[];
     selectedHero: Hero;
 
-    // When Angular creates a HeroesComponent, the Dependency Injection system sets the heroService parameter to the singleton instance of HeroService.
+    // Quando o Angular cria o HeroesComponent, ele injeta a classe de servico
     constructor(private heroService: HeroService) { }
 
     ngOnInit() {
@@ -23,6 +22,21 @@ export class HeroesComponent implements OnInit {
 
     getHeroes(): void {
         this.heroService.getHeroes().subscribe(heroes => this.heroes = heroes);
+    }
+
+    add(name: string): void{
+        name = name.trim();
+        if(!name){
+            return;
+        }
+        // Adiciona um nov hero e atualiza a lista local com o hero criado
+        this.heroService.addHero({name} as Hero).subscribe(hero => this.heroes.push(hero));
+    }
+
+    delete(hero: Hero): void{
+        // atualiza a lista Heros da classe
+        this.heroes = this.heroes.filter(h => h!==hero);
+        this.heroService.deleteHero(hero).subscribe();
     }
 
 }
